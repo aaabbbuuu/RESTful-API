@@ -1,14 +1,16 @@
 # SecureAPIProject
 
-This project demonstrates how to build a secure RESTful API using Django, Django REST framework, and JWT authentication. The API includes user registration, login, and role-based access control.
+A modern, secure RESTful API using Django 5, Django REST Framework, JWT auth, and environment-based configuration.
 
-## Features
+## 🚀 Features
 
-- User registration
-- User login with JWT authentication
+- JWT Authentication (access + refresh tokens)
 - Role-based access control
+- Secure secret management via `.env`
+- CORS support
+- Environment-ready for production
 
-## Setup
+## 🔧 Setup
 
 ### Prerequisites
 
@@ -17,86 +19,53 @@ This project demonstrates how to build a secure RESTful API using Django, Django
 
 ### Installation
 
-1. Clone the repository:
+```bash
+git clone https://github.com/your-username/SecureAPIProject.git
+cd SecureAPIProject
+python -m venv venv
+venv\Scripts\activate     # On Windows
+# source venv/bin/activate  # On Unix/MacOS
+pip install -r requirements.txt
+```
 
-    ```bash
-    git clone https://github.com/your-username/SecureAPIProject.git
-    cd SecureAPIProject
-    ```
+Create a `.env` file:
 
-2. Create and activate a virtual environment:
+```env
+DJANGO_SECRET_KEY=your-secret-key
+DJANGO_DEBUG=True
+DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+```
 
-    ```bash
-    python -m venv secureapi_env
-    secureapi_env\Scripts\activate  # On Windows
-    # source secureapi_env/bin/activate  # On Unix or MacOS
-    ```
+Run migrations and create superuser:
 
-3. Install the required packages:
+```bash
+python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser
+```
 
-    ```bash
-    pip install -r requirements.txt
-    ```
+Run the server:
 
-4. Apply migrations:
+```bash
+python manage.py runserver
+```
 
-    ```bash
-    python manage.py makemigrations
-    python manage.py migrate
-    ```
+## 🔑 API Auth Endpoints
 
-5. Create a superuser:
+| Endpoint           | Method | Description         |
+|--------------------|--------|---------------------|
+| /api/register/     | POST   | Register a new user |
+| /api/login/        | POST   | Login and get tokens |
+| /api/token/refresh/| POST   | Refresh JWT token    |
 
-    ```bash
-    python manage.py createsuperuser
-    ```
+## 🛡 Deployment
 
-6. Run the development server:
+Use `gunicorn` in production:
 
-    ```bash
-    python manage.py runserver
-    ```
+```bash
+gunicorn SecureAPIProject.wsgi:application --bind 0.0.0.0:8000
+```
 
-7. Access the API at `http://127.0.0.1:8000/`.
+## 📄 License
 
-## API Endpoints
-
-### Register
-
-- URL: `/api/register/`
-- Method: `POST`
-- Body:
-    ```json
-    {
-        "username": "exampleuser",
-        "email": "exampleuser@example.com",
-        "password": "examplepassword123"
-    }
-    ```
-
-### Login
-
-- URL: `/api/login/`
-- Method: `POST`
-- Body:
-    ```json
-    {
-        "username": "exampleuser",
-        "password": "examplepassword123"
-    }
-    ```
-
-### Refresh Token
-
-- URL: `/api/token/refresh/`
-- Method: `POST`
-- Body:
-    ```json
-    {
-        "refresh": "your-refresh-token"
-    }
-    ```
-
-## License
-
-This project is licensed under the MIT License.
+MIT License
